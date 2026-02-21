@@ -1,0 +1,261 @@
+local t = game:GetService("TweenService")
+local info = TweenInfo.new(0.4, Enum.EasingStyle.Cubic, Enum.EasingDirection.Out)
+
+local function encode(a)
+	local chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_!@#$%^&*()-=+[]{}|;:<>?,.`~'
+	local result = ''
+	for i=1,15 do
+		local charIndex = math.random(#chars)
+		result = result .. chars:sub(charIndex, charIndex)
+	end
+	a.Name = result
+end
+local function borderpixel(a) a.BorderSizePixel = 0 end
+local function corner(a,b,c) 
+	local corner = Instance.new("UICorner",a) encode(corner)
+	corner.CornerRadius = UDim.new(b, c)
+end
+local function uidrag(a, b)
+	local drag = Instance.new("UIDragDetector", a) encode(drag)
+	drag.BoundingUI = b
+end
+local function stroke(a,b,c,d,e,f) 
+	local stroke = Instance.new("UIStroke",a) encode(stroke)
+	stroke.Color = Color3.fromRGB(b, c, d)
+	stroke.Thickness = e
+	stroke.BorderStrokePosition = f
+	stroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+end
+local function pos(a,b,c,d,e) a.Position = UDim2.new(b, c, d, e) end
+local function center(a) a.AnchorPoint = Vector2.new(0.5,0.5) end
+local function size(a,b,c,d,e) a.Size = UDim2.new(b, c, d, e) end
+local function tbackground(a) a.BackgroundTransparency = 1 end
+local function nvisible(a) a.Visible = false end
+local function backgroundcolor(a,b,c,d) a.BackgroundColor3 = Color3.fromRGB(b, c, d) end
+local function img(a,b) a.Image = b end
+local function text(a,b) a.Text = b end
+local function textColor(a,b,c,d) a.TextColor3 = Color3.fromRGB(b, c, d) end
+local function textSize(a,b) a.TextSize = b end
+local function textFont(a,b) a.Font = b end
+local function textWarp(a,b) a.TextWrapped = b end
+local function textX(a,b) a.TextXAlignment = b end
+local function textY(a,b) a.TextYAlignment = b end
+
+local groupencode1 = ""
+local groupencode2 = ""
+local groupencode3 = ""
+
+local allgroups = {}
+local function createWindow(Name)
+	local gui = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui)
+	encode(gui)
+	gui.ScreenInsets = Enum.ScreenInsets.None
+	groupencode1 = gui.Name
+	
+	local Main1 = Instance.new("CanvasGroup", gui) encode(Main1)
+	borderpixel(Main1)
+	corner(Main1, 0, 6)
+	pos(Main1, .5, -170, .5, -130)
+	size(Main1,0, 340, 0, 260)
+	backgroundcolor(Main1, 0, 0, 30)
+	stroke(Main1, 0, 0, 150, 2, Enum.BorderStrokePosition.Center)
+	groupencode2 = Main1.Name
+	
+	local Top1 = Instance.new("Frame", Main1) encode(Top1)
+	borderpixel(Top1)
+	corner(Top1, 0, 6)
+	size(Top1, 1, 0, 0, 30)
+	backgroundcolor(Top1, 0, 0, 70)
+	uidrag(Main1, Top1)
+	
+	local img1 = Instance.new("ImageLabel", Top1) encode(img1)
+	borderpixel(img1)
+	pos(img1, 0, 18, 0, 15)
+	size(img1, 0, 20, 0, 20)
+	center(img1)
+	tbackground(img1)
+	img(img1,"rbxassetid://94570010893830")
+	
+	local title1 = Instance.new("TextLabel", Top1) encode(title1)
+	borderpixel(title1)
+	pos(title1, 0, 36, 0, 0)
+	size(title1, 1, 0, 1, 0)
+	tbackground(title1)
+	text(title1, Name)
+	textColor(title1, 255, 255, 255)
+	textSize(title1, 18)
+	textFont(title1, Enum.Font.Cartoon)
+	textX(title1,Enum.TextXAlignment.Left)
+	
+	local btnimg1 = Instance.new("ImageButton", Top1) encode(btnimg1)
+	borderpixel(btnimg1)
+	pos(btnimg1, 1, -18, 0, 15)
+	size(btnimg1, 0, 14, 0, 14)
+	center(btnimg1)
+	tbackground(btnimg1)
+	img(btnimg1, "rbxassetid://96595317895175")
+	
+	local btn1 = Instance.new("TextButton", Top1) encode(btn1)
+	borderpixel(btn1)
+	pos(btn1, 1, -44, 0, 15)
+	size(btn1, 0, 16, 0, 16)
+	center(btn1)
+	tbackground(btn1)
+	text(btn1, "")
+	
+	local opened = false
+	btn1.MouseButton1Click:Connect(function()
+		if opened == false then
+			t:Create(Main1, info, {Size = UDim2.new(0, 115+title1.TextBounds.X, 0, 31)}):Play()
+		else
+			t:Create(Main1, info, {Size = UDim2.new(0, 340, 0, 260)}):Play()
+		end
+		opened = not opened
+	end)
+	
+	local visual1 = Instance.new("Frame", btn1) encode(visual1)
+	borderpixel(visual1)
+	corner(visual1, 0, 5)
+	center(visual1)
+	pos(visual1, 0.5, 0, 0.5, 0)
+	size(visual1, 1, 0, 0, 4)
+	backgroundcolor(visual1, 255, 255, 255)
+	
+	local group = Instance.new("ScrollingFrame", Main1) encode(group)
+	group.CanvasSize = UDim2.new(0, 500, 0, 0)
+	group.ScrollBarThickness = 0
+	borderpixel(group)
+	pos(group, 0, 0, 0, 30)
+	size(group, 1, 0, 0, 30)
+	tbackground(group)
+	groupencode3 = group.Name
+	
+	local groups = Instance.new("ScrollingFrame", Main1) encode(groups)
+	groups.CanvasSize = UDim2.new(0, 0, 0, 0)
+	groups.ScrollBarThickness = 0
+	borderpixel(groups)
+	pos(groups, 0, 0, 0, 64)
+	size(groups, 1, 0, 1, -64)
+	tbackground(groups)
+	table.insert(allgroups, groups.Name)
+	print(allgroups)
+end
+
+local groups = {}
+local function creategroup(Name, image)
+	local parent = game.Players.LocalPlayer.PlayerGui[groupencode1][groupencode2][groupencode3]
+	local childCount = #parent.GetChildren(parent)
+	local xOffset = childCount * 6
+	local totalWidth = 0
+	for _, existingVisual in ipairs(parent:GetChildren()) do
+		if existingVisual.ClassName == "TextButton" then
+			totalWidth += existingVisual.Size.X.Offset
+		end
+	end
+	
+	local btn1 = Instance.new("TextButton", parent) encode(btn1) 
+	text(btn1, "")
+	backgroundcolor(btn1, 255, 255, 255)
+	borderpixel(btn1)
+	size(btn1, 1, -2, 1, -2)
+	pos(btn1, 0, totalWidth + xOffset+6, 0, 5)
+	backgroundcolor(btn1, 0, 0, 50)
+	corner(btn1, 1, 0)
+	stroke(btn1, 0, 0, 150, 1, Enum.BorderStrokePosition.Outer)
+
+	local img1 = Instance.new("ImageLabel", btn1) encode(img1)
+	borderpixel(img1)
+	pos(img1, 0, 13, 0.5, 0)
+	size(img1, 0, 14, 0, 14)
+	center(img1)
+	tbackground(img1)
+	img(img1, image)
+
+	local label1 = Instance.new("TextLabel", btn1) encode(label1)
+	borderpixel(label1)
+	pos(label1, 0, 24, 0, 0)
+	size(label1, 100, 0, 1, 0)
+	tbackground(label1)
+	text(label1, Name)
+	textColor(label1, 255, 255, 255)
+	textSize(label1, 15)
+	textFont(label1, Enum.Font.Cartoon)
+	textX(label1, Enum.TextXAlignment.Left)
+
+	wait(0.05)
+	size(btn1, 0, 8+20+label1.TextBounds.X+6, 0, 24)
+	
+	local scrolling = Instance.new("ScrollingFrame", parent.Parent[allgroups[1]])
+	scrolling.Name = btn1.Name
+	scrolling.CanvasSize = UDim2.new(0, 0, 0, 400)
+	scrolling.ScrollBarThickness = 6
+	tbackground(scrolling)
+	borderpixel(scrolling)
+	pos(scrolling, xOffset/6, 0, 0, 0)
+	size(scrolling, 1, 0, 1, 0)
+	table.insert(groups, scrolling.Name)
+	return {btn1, scrolling}
+end
+
+local subgroups = {}
+local function createTogglebtn(Name, group)
+	local parent = game.Players.LocalPlayer.PlayerGui[groupencode1][groupencode2][allgroups[1]][groups[group]]
+	local frame1 = Instance.new("Frame", parent) encode(frame1)
+	tbackground(frame1)
+	borderpixel(frame1)
+	size(frame1, 1, -2, 0, 32)
+	local childCount = #parent.GetChildren(parent)
+	local xOffset = childCount * 4
+	local totalWidth = 0
+	for _, existingVisual in ipairs(parent:GetChildren()) do
+		if existingVisual.ClassName == "Frame" then
+			totalWidth += existingVisual.Size.Y.Offset
+		end
+	end
+	pos(frame1, 0, 0, 0, totalWidth-32 + xOffset)
+	local frame2 = Instance.new("Frame", frame1) encode(frame2)
+	backgroundcolor(frame2, 0, 0, 50)
+	borderpixel(frame2)
+	size(frame2, 1, -14, 1, 0)
+	pos(frame2, 0, 6, 0, 0)
+	corner(frame2, 1, 0)
+	stroke(frame2, 0, 0, 150, 2, Enum.BorderStrokePosition.Inner)
+	
+	local btn1 = Instance.new("TextButton", frame2) btn1.Name = "btn1" text(btn1, "")
+	backgroundcolor(btn1, 0, 0, 50)
+	borderpixel(btn1)
+	center(btn1)
+	size(btn1, 0, 20, 0, 20)
+	pos(btn1, 0, 16, 0, 16)
+	corner(btn1, 1, 0)
+	stroke(btn1, 255, 255, 255, 2, Enum.BorderStrokePosition.Inner)
+	local label1 = Instance.new("TextLabel", btn1) encode(label1) text(label1, "")
+	borderpixel(label1)
+	center(label1)
+	pos(label1, 0.5, 0, 0.5, 0)
+	size(label1, 0, 12, 0, 12)
+	backgroundcolor(label1, 255, 255, 255)
+	corner(label1, 1, 0)
+	nvisible(label1)
+	
+	local label2 = Instance.new("TextLabel", frame2) encode(label2)
+	tbackground(label2)
+	borderpixel(label2)
+	pos(label2, 0, 30, 0, 0)
+	size(label2, 1, 0, 1, 0)
+	text(label2, Name)
+	textColor(label2, 255, 255, 255)
+	textSize(label2, 18)
+	textFont(label2, Enum.Font.Cartoon)
+	textX(label2, Enum.TextXAlignment.Left)
+	table.insert(subgroups, btn1)
+end
+
+local function createsubgroup(Name, group, Type)
+	if Type == "Toggle" then
+		createTogglebtn(Name, group)
+		return subgroups[#subgroups]
+	end
+end
+
+return {Window = createWindow, Group = creategroup, SubGroup = createsubgroup}
