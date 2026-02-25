@@ -100,6 +100,10 @@ function new.Window(namewindow)
 	backgroundcolor(Top, 0, 0, 70)
 	stroke(Top, 0, 0, 150, 1)
 	Move(Top)
+	if UIS.TouchEnabled then
+		local drag = Instance.new("UIDragDetector", Main1)
+		drag.BoundingUI = Top
+	end
 	
 	local Logo = Instance.new("ImageLabel", Top) borderpixel(Logo)
 	size(Logo, 0, 22, 0, 22)
