@@ -94,6 +94,7 @@ end
 
 function new.Window(namewindow)
 	local Gui = Instance.new("ScreenGui", game.CoreGui) encode(Gui)
+	print("Loading")
 	
 	local Main1 = Instance.new("CanvasGroup", Gui) borderpixel(Main1)
 	corner(Main1, 0, 8)
@@ -494,6 +495,7 @@ function new.Window(namewindow)
 		end
 		return Buttons
 	end
+	print("Loaded")
 	return Sections
 end
 
