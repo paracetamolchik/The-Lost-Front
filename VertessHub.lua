@@ -93,7 +93,7 @@ local function getKeyCodeString(a)
 end
 
 function new.Window(namewindow)
-	local Gui = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui) encode(Gui)
+	local Gui = Instance.new("ScreenGui", game.CoreGui) encode(Gui)
 	
 	local Main1 = Instance.new("CanvasGroup", Gui) borderpixel(Main1)
 	corner(Main1, 0, 8)
