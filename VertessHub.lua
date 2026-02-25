@@ -5,6 +5,7 @@ local info2 = TweenInfo.new(0.15, Enum.EasingStyle.Cubic, Enum.EasingDirection.O
 local info3 = TweenInfo.new(0.1, Enum.EasingStyle.Cubic, Enum.EasingDirection.Out)
 local UIS = game:GetService("UserInputService")
 local mouse = game.Players.LocalPlayer:GetMouse()
+local keycode = ""
 
 local function encode(a)
 	local chars = '0123456789'
@@ -84,8 +85,15 @@ local function Move(a)
 	UIS.InputEnded:Connect(onInputEnded)
 end
 
+local function getKeyCodeString(a)
+	local keyCodeString = tostring(a)
+	local key = keyCodeString:sub(keyCodeString:find("%.([^.]+)$") + 1)
+	keycode = a
+	return key
+end
+
 function new.Window(namewindow)
-	local Gui = Instance.new("ScreenGui", game.CoreGui) encode(Gui)
+	local Gui = Instance.new("ScreenGui", game.Players.LocalPlayer.PlayerGui) encode(Gui)
 	
 	local Main1 = Instance.new("CanvasGroup", Gui) borderpixel(Main1)
 	corner(Main1, 0, 8)
@@ -101,8 +109,8 @@ function new.Window(namewindow)
 	stroke(Top, 0, 0, 150, 1)
 	Move(Top)
 	if UIS.TouchEnabled then
-		local drag = Instance.new("UIDragDetector", Main1)
-		drag.BoundingUI = Top
+		local drag = Instance.new("UIDragDetector", Top)
+		drag.BoundingUI = Main1
 	end
 	
 	local Logo = Instance.new("ImageLabel", Top) borderpixel(Logo)
@@ -342,7 +350,7 @@ function new.Window(namewindow)
 			end)
 		end
 		
-		function Buttons:Slider(textbtn, default, max, min, callback)
+		function Buttons:Slider(textbtn, default, max, min, callback, nums)
 			local btn = Instance.new("Frame", CSectionPage) borderpixel(btn)
 			size(btn, 1, 0, 0, 26)
 			corner(btn, 0, 7)
@@ -365,11 +373,12 @@ function new.Window(namewindow)
 			pos(bar, 1, -106, 0, 10)
 			corner(bar, 1, 0)
 			backgroundcolor(bar, 0, 0, 0)
+			stroke(bar, 0, 0, 150, 1)
 			
 			local fillbar = Instance.new("Frame", bar) borderpixel(fillbar)
 			size(fillbar, 0, 0, 1, 0)
 			corner(fillbar, 1, 0)
-			backgroundcolor(fillbar, 0, 0, 150)
+			backgroundcolor(fillbar, 0, 0, 75)
 			
 			local textval = Instance.new("TextLabel", btn) borderpixel(textval)
 			textval.AnchorPoint = Vector2.new(1, 0)
@@ -390,8 +399,12 @@ function new.Window(namewindow)
 				local relativeX = mouse.X - fillbar.Parent.AbsolutePosition.X
 				local newXScale = math.clamp(relativeX / 100, 0, 1)
 				t:Create(fillbar, info3, {Size = UDim2.new(newXScale, 0, 1, 0)}):Play()
-				textval.Text = math.floor(newXScale * (max - min) + min)
-				callback(math.floor(newXScale * (max - min) + min))
+				textval.Text = tonumber(string.format("%." .. tostring(nums) .. "f", newXScale * (max - min) + min))
+				if nums then
+					callback(tonumber(string.format("%." .. tostring(nums) .. "f", newXScale * (max - min) + min)))
+				else
+					callback(math.floor(newXScale * (max - min) + min))
+				end
 			end
 
 			local function onInputChanged(input)
@@ -415,6 +428,69 @@ function new.Window(namewindow)
 				end
 			end)
 			textval.Text = default
+		end
+		
+		function Buttons:Keybind(textbtn, Key, callback)
+			local firstchanged = false
+			local chanding = false
+			local btn = Instance.new("TextButton", CSectionPage) borderpixel(btn)
+			text(btn, "")
+			size(btn, 1, 0, 0, 26)
+			corner(btn, 0, 7)
+			stroke(btn, 0, 0, 150, 1)
+			backgroundcolor(btn, 0, 0, 25)
+			
+			local Label = Instance.new("TextLabel", btn) borderpixel(Label) txtWrapped(Label)
+			text(Label, " "..textbtn)
+			size(Label, 1, -28, 0, 26)
+			pos(Label, 0, 24, 0, 0)
+			textSize(Label, 16)
+			textColor(Label, 255, 255, 255)
+			textFont(Label, Enum.Font.Cartoon)
+			textX(Label, Enum.TextXAlignment.Left)
+			tbackground(Label)
+			
+			local keyvisual = Instance.new("TextLabel", btn) borderpixel(keyvisual)
+			size(keyvisual, 0, 16, 0, 16)
+			text(keyvisual, getKeyCodeString(Key))
+			pos(keyvisual, 0, 6, 0, 5)
+			corner(keyvisual, 0, 4)
+			backgroundcolor(keyvisual, 0, 0, 60)
+			stroke(keyvisual, 0, 0, 150, 1)
+			textColor(keyvisual, 255, 255, 255)
+			textFont(keyvisual, Enum.Font.Cartoon)
+			textSize(keyvisual, 15)
+			
+			local function updateKeyVisual()
+				text(keyvisual, getKeyCodeString(Key))
+				keyvisual.Size = UDim2.new(0, keyvisual.TextBounds.X + 8, 0, 16)
+				pos(Label, 0, keyvisual.Size.X.Offset+8, 0, 0)
+				chanding = false
+			end
+			
+			UIS.InputBegan:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.Keyboard then
+					if chanding then
+						Key = input.KeyCode
+						updateKeyVisual()
+						chanding = false
+						firstchanged = true
+					end
+					if not chanding then
+						if input.KeyCode == Key and not firstchanged then
+							callback()
+						end
+						firstchanged = false
+					end
+				end	
+			end)
+			
+			btn.MouseButton1Click:Connect(function()
+				text(keyvisual, "...")
+				keyvisual.Size = UDim2.new(0, keyvisual.TextBounds.X+8, 0, 16)
+				pos(Label, 0, keyvisual.Size.X.Offset+8, 0, 0)
+				chanding = true
+			end)
 		end
 		return Buttons
 	end
