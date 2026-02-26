@@ -496,7 +496,7 @@ function new.Window(namewindow)
 		return Buttons
 	end
 	local endload = tick()
-	print("Loaded in "..endload-startload.." Seconds.)
+	print("Loaded in "..endload-startload.." Seconds.")
 	return Sections
 end
 
