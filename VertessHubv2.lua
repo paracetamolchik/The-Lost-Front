@@ -1,3 +1,4 @@
+local startload = tick()
 local new = {}
 local t = game:GetService("TweenService")
 local info = TweenInfo.new(0.4, Enum.EasingStyle.Cubic, Enum.EasingDirection.Out)
@@ -94,7 +95,6 @@ end
 
 function new.Window(namewindow)
 	local Gui = Instance.new("ScreenGui", game.CoreGui) encode(Gui)
-	print("Loading")
 	
 	local Main1 = Instance.new("CanvasGroup", Gui) borderpixel(Main1)
 	corner(Main1, 0, 8)
@@ -495,7 +495,8 @@ function new.Window(namewindow)
 		end
 		return Buttons
 	end
-	print("Loaded")
+	local endload = tick()
+	print("Loaded in "..endload-startload.." Seconds.)
 	return Sections
 end
 
