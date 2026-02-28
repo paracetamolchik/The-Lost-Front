@@ -1,4 +1,4 @@
-local new = loadstring(game:HttpGet("https://raw.githubusercontent.com/paracetamolchik/The-Lost-Front/refs/heads/main/VertessHub.lua"))()
+local new = loadstring(game:HttpGet("https://raw.githubusercontent.com/paracetamolchik/VertessHub/refs/heads/main/Hub.lua"))()
 local RunS = game:GetService("RunService")
 local uis = game:GetService("UserInputService")
 local t = game:GetService("TweenService")
