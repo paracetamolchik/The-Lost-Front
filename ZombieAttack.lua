@@ -146,8 +146,8 @@ game.Workspace.BossFolder.ChildAdded:Connect(function(v)
 	addlabel(v)
 end)
 
-local ZombieList = section3:Keybind("Zombie List", Enum.KeyCode.Z, function(db)
-	listframe.Visible = not listframe.Visible
+local ZombieList = section3:Togglebtn("Zombie List", function(db)
+	listframe.Visible = db
 end)
 
 local distanceY = section1:Slider("Distance Y", 7, 25, 0, function(v)
